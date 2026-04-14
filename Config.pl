@@ -191,8 +191,8 @@ sub install_code{
     # Import the file copy function to avoid calls to system.
     use File::Copy;
     
-    return unless $Compiler =~ /ifort/ and $OS =~ /Linux/;
-    # Unfix object list for Linux/ifort compiler (this is not kosher)
+    return unless $Compiler =~ /if(ort|x)/ and $OS =~ /Linux/;
+    # Unfix object list for Linux/ifort|ifx compiler (this is not kosher)
     @ARGV = ($SrcMakefile);
     while (<>){
 	s/-lSHARE.*ModIons.o/-lSHARE/;
