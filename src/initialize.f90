@@ -72,6 +72,11 @@ subroutine initialize_gitm(TimeIn)
 
   call init_grid
 
+  if (.not. allocated(EddyDiffusionCoef2D)) &
+    allocate(EddyDiffusionCoef2D(nLons, nLats, nBlocks))
+  EddyDiffusionCoef2D = EddyDiffusionCoef
+  if (UseEddyMap) call read_eddy_map
+
   if (DoRestart) then
     call read_inputs(trim(restartInDir)//"/header.rst")
     call set_inputs

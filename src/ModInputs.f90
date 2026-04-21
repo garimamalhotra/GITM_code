@@ -310,6 +310,10 @@ module ModInputs
   real :: EddyDiffusionCoef = 50.0
   real :: EddyDiffusionPressure0 = 0.01
   real :: EddyDiffusionPressure1 = 0.005
+
+  logical :: UseEddyMap = .false.
+  character(len=iCharLen_) :: EddyMapFile = ""
+  real, allocatable :: EddyDiffusionCoef2D(:, :, :)
   real :: Kappa1DCorrectionFactor = 45.0
   real :: Kappa1DCorrectionPower = 1.75
   logical :: UseKappa1DCorrection = .false.

@@ -1108,6 +1108,23 @@ subroutine set_inputs
           write(*, *) "EddyDiffusionPressure1 (real)"
         endif
 
+      case ("#EDDYMAP")
+        call read_in_logical(UseEddyMap, iError)
+        if (UseEddyMap .and. iError == 0) then
+          call read_in_string(EddyMapFile, iError)
+        endif
+
+        if (iError /= 0) then
+          write(*, *) 'Incorrect format for #EDDYMAP:'
+          write(*, *) ''
+          write(*, *) "If UseEddyMap is true, the scalar EddyDiffusionCoef is"
+          write(*, *) "replaced by values from a NetCDF file"
+          write(*, *) "with variables lat(lat), lon(lon), Kzz_P0(lat,lon)."
+          write(*, *) '#EDDYMAP'
+          write(*, *) "UseEddyMap  (logical)"
+          write(*, *) "EddyMapFile (string, NetCDF path)"
+        endif
+
       case ("#FORCING")
         call read_in_logical(UsePressureGradient, iError)
         call read_in_logical(UseIonDrag, iError)

@@ -10,10 +10,14 @@ include ../Makefile.def
 include Makefile.DEPEND
 include Makefile.RULES
 
+NETCDF_INC = $(shell nf-config --fflags)
+NETCDF_LIB = $(shell nf-config --flibs)
+
 SEARCH_EXTRA =  -I${ABDIR} \
 	 	-I${IODIR} \
 		-I${EMPIRICALUADIR} \
-		-I${EIEDIR}
+		-I${EIEDIR} \
+		${NETCDF_INC}
 
 MODULES = \
 	apexsh.o\
@@ -100,6 +104,7 @@ OBJECTS = \
 	RCMR_routines.o \
 	read_inputs.o\
 	read_ACE_data.o\
+	read_eddy_map.o\
 	read_f107.o\
 	read_MHDIMF_Indices_new.o\
 	read_NGDC_Indices_new.o\
@@ -152,7 +157,7 @@ ${EXE}:	${OBJECTS_EXE}
 		-L${ABDIR} -lSphere \
 		-L${LIBDIR} -lEMPIRICALUA -lINDICES -lSHARE \
 		-L${EIEDIR} -lIE \
-		-L${GLDIR} -lGLOW ${LBLAS} ${Lflag1}
+		-L${GLDIR} -lGLOW ${LBLAS} ${Lflag1} ${NETCDF_LIB}
 
 SAMI:	DEPENDSAMI
 	@make ${SAMIEXE}

@@ -377,13 +377,14 @@ subroutine calc_eddy_diffusion_coefficient(iBlock)
   use ModSizeGITM
   use ModGITM, only: pressure
   use ModInputs, only: EddyDiffusionPressure0, EddyDiffusionPressure1, &
-                       EddyDiffusionCoef
+                       EddyDiffusionCoef2D
   use ModSources, only: KappaEddyDiffusion
 
   implicit none
 
   integer, intent(in) :: iBlock
   integer :: iAlt, iLat, iLon
+  real    :: Kcoef
 
   KappaEddyDiffusion = 0.
   do iAlt = -1, nAlts + 2
@@ -391,13 +392,15 @@ subroutine calc_eddy_diffusion_coefficient(iBlock)
     do iLat = 1, nLats
       do iLon = 1, nLons
 
+        Kcoef = EddyDiffusionCoef2D(iLon, iLat, iBlock)
+
         if (pressure(iLon, iLat, iAlt, iBlock) > EddyDiffusionPressure0) then
-          KappaEddyDiffusion(iLon, iLat, iAlt, iBlock) = EddyDiffusionCoef
+          KappaEddyDiffusion(iLon, iLat, iAlt, iBlock) = Kcoef
 
         else if (pressure(iLon, iLat, iAlt, iBlock) > &
                  EddyDiffusionPressure1) then
 
-          KappaEddyDiffusion(iLon, iLat, iAlt, iBlock) = EddyDiffusionCoef* &
+          KappaEddyDiffusion(iLon, iLat, iAlt, iBlock) = Kcoef* &
                                                          (pressure(iLon, iLat, iAlt, iBlock) - &
                                                           EddyDiffusionPressure1)/ &
                                                          (EddyDiffusionPressure0 - EddyDiffusionPressure1)
